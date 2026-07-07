@@ -21,19 +21,29 @@ const registerUser = async (req, res) => {
     }
 
     const user = await User.create({
-      hospitalId,
-      firstName,
-      lastName,
-      email,
-      password,
-      role,
-    });
+  hospitalId,
+  firstName,
+  lastName,
+  email,
+  password,
+  role,
+});
 
-    res.status(201).json({
-      message: "User registered successfully",
-      token: generateToken(user._id),
-      user,
-    });
+const userResponse = {
+  _id: user._id,
+  hospitalId: user.hospitalId,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  email: user.email,
+  role: user.role,
+  isActive: user.isActive,
+};
+
+res.status(201).json({
+  message: "User registered successfully",
+  token: generateToken(user._id),
+  user: userResponse,
+});
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -61,11 +71,21 @@ const loginUser = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      message: "Login successful",
-      token: generateToken(user._id),
-      user,
-    });
+  const userResponse = {
+  _id: user._id,
+  hospitalId: user.hospitalId,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  email: user.email,
+  role: user.role,
+  isActive: user.isActive,
+};
+
+res.status(200).json({
+  message: "Login successful",
+  token: generateToken(user._id),
+  user: userResponse,
+});
   } catch (error) {
     res.status(500).json({
       message: error.message,
