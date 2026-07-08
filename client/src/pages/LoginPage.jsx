@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { loginUser } from "../services/authService";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,32 +12,45 @@ function LoginPage() {
   const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const data = await loginUser({
-      email,
-      password,
-    });
+    try {
+      const data = await loginUser({
+        email,
+        password,
+      });
 
-    localStorage.setItem(
-      "token",
-      data.token
-    );
+      localStorage.setItem(
+        "token",
+        data.token
+      );
 
-    setUser(data.user);
+      setUser(data.user);
 
-    navigate("/dashboard");
-  } 
-  catch (error) {
-    console.error(error);
+     const role = data.user.role;
 
-    alert(
-      error.response?.data?.message ||
-      "Login failed"
-    );
-  }
-};
+      if (
+        role === "SUPER_ADMIN" ||
+        role === "HOSPITAL_ADMIN"
+      ) {
+        navigate("/admin-dashboard");
+      } else if (role === "DOCTOR") {
+        navigate("/doctor-dashboard");
+      } else if (role === "PATIENT") {
+        navigate("/patient-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
+    }
+    catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.message ||
+        "Login failed"
+      );
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -87,6 +101,17 @@ function LoginPage() {
           >
             Login
           </button>
+
+          <p className="text-center mt-4">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-blue-600 font-semibold"
+            >
+              Register
+            </Link>
+          </p>
+
         </form>
       </div>
     </div>

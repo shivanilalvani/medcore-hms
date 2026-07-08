@@ -1,11 +1,45 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import DashboardLayout from "../layouts/DashboardLayout";
 
 function DashboardPage() {
+  const [stats, setStats] = useState({
+    doctors: 0,
+    patients: 0,
+    appointments: 0,
+    revenue: 0,
+  });
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        "http://localhost:5000/api/dashboard/stats",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setStats(response.data);
+    } catch (error) {
+      console.error("Dashboard Error:", error);
+    }
+  };
+
   return (
     <DashboardLayout>
-      <h1 className="text-3xl font-bold mb-6">
-        Dashboard
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">
+          Dashboard
+        </h1>
+      </div>
 
       <div className="grid grid-cols-4 gap-6">
         <div className="bg-white p-6 rounded-lg shadow">
@@ -14,7 +48,7 @@ function DashboardPage() {
           </h2>
 
           <p className="text-3xl font-bold">
-            12
+            {stats.doctors}
           </p>
         </div>
 
@@ -24,7 +58,7 @@ function DashboardPage() {
           </h2>
 
           <p className="text-3xl font-bold">
-            124
+            {stats.patients}
           </p>
         </div>
 
@@ -34,7 +68,7 @@ function DashboardPage() {
           </h2>
 
           <p className="text-3xl font-bold">
-            38
+            {stats.appointments}
           </p>
         </div>
 
@@ -44,7 +78,7 @@ function DashboardPage() {
           </h2>
 
           <p className="text-3xl font-bold">
-            ₹45,000
+            ₹{stats.revenue}
           </p>
         </div>
       </div>

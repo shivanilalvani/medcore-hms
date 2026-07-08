@@ -15,6 +15,8 @@ const errorHandler = require("./middleware/errorMiddleware");
 const medicalRecordRoutes = require("./routes/medicalRecordRoutes");
 const prescriptionRoutes = require("./routes/prescriptionRoutes");
 const billRoutes = require("./routes/billRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+
 
 // Load environment variables
 dotenv.config();
@@ -38,6 +40,7 @@ app.use("/api/appointments", appointmentRoutes);
 app.use("/api/medical-records",   medicalRecordRoutes);
 app.use("/api/prescriptions", prescriptionRoutes );
 app.use("/api/bills", billRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.use(errorHandler);
 
