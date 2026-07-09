@@ -20,14 +20,16 @@ function LoginPage() {
         password,
       });
 
+      localStorage.setItem("token", data.token);
+
       localStorage.setItem(
-        "token",
-        data.token
+        "user",
+        JSON.stringify(data.user)
       );
 
       setUser(data.user);
 
-     const role = data.user.role;
+      const role = data.user.role;
 
       if (
         role === "SUPER_ADMIN" ||

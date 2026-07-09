@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import DoctorsPage from "./pages/DoctorsPage";
-import PatientsPage from "./pages/PatientsPage";
 import AppointmentsPage from "./pages/AppointmentsPage";
 import BillingPage from "./pages/BillingPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -11,6 +10,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import PatientDashboard from "./pages/PatientDashboard";
 import UsersPage from "./pages/UsersPage";
+import PatientsPage from "./pages/PatientsPage";
+import AddPatientPage from "./pages/AddPatientPage";
 
 function App() {
   return (
@@ -26,11 +27,6 @@ function App() {
         <Route
           path="/doctors"
           element={<DoctorsPage />}
-        />
-
-        <Route
-          path="/patients"
-          element={<PatientsPage />}
         />
 
         <Route
@@ -67,6 +63,17 @@ function App() {
           path="/users"
           element={<UsersPage />}
         />
+
+        <Route
+          path="/patients"
+          element={<PatientsPage />}
+        />
+
+        <Route
+          path="/patients/add"
+          element={<AddPatientPage />}
+        />
+
       </Routes>
     </BrowserRouter>
   );

@@ -1,9 +1,51 @@
 const Patient = require("../models/Patient");
+const User = require("../models/User");
 
-// Create Patient
 const createPatient = async (req, res) => {
   try {
-    const patient = await Patient.create(req.body);
+    const {
+      hospitalId,
+      firstName,
+      lastName,
+      email,
+      password,
+      phone,
+      gender,
+      bloodGroup,
+      emergencyContact,
+      allergies,
+      medicalHistory,
+    } = req.body;
+
+    const existingUser =
+      await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Patient already exists",
+      });
+    }
+
+    const user = await User.create({
+      hospitalId,
+      firstName,
+      lastName,
+      email,
+      password,
+      role: "PATIENT",
+      phone,
+      gender,
+    });
+
+    const patient =
+      await Patient.create({
+        hospitalId,
+        userId: user._id,
+        bloodGroup,
+        emergencyContact,
+        allergies,
+        medicalHistory,
+      });
 
     res.status(201).json({
       message: "Patient created successfully",
@@ -16,55 +58,12 @@ const createPatient = async (req, res) => {
   }
 };
 
-// Get All Patients
 const getPatients = async (req, res) => {
   try {
     const patients = await Patient.find()
-      .populate("userId")
-      .populate("hospitalId");
+      .populate("userId", "-password");
 
     res.status(200).json(patients);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-
-// Get Patient By Id
-const getPatientById = async (req, res) => {
-  try {
-    const patient = await Patient.findById(req.params.id)
-      .populate("userId")
-      .populate("hospitalId");
-
-    if (!patient) {
-      return res.status(404).json({
-        message: "Patient not found",
-      });
-    }
-
-    res.status(200).json(patient);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
-
-// Update Patient
-const updatePatient = async (req, res) => {
-  try {
-    const patient = await Patient.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-
-    res.status(200).json({
-      message: "Patient updated successfully",
-      patient,
-    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -75,6 +74,4 @@ const updatePatient = async (req, res) => {
 module.exports = {
   createPatient,
   getPatients,
-  getPatientById,
-  updatePatient,
 };

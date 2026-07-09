@@ -57,6 +57,13 @@ const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
 
+    if (!user.isActive) {
+  return res.status(403).json({
+    message:
+      "Your account has been deactivated. Contact administrator.",
+  });
+}
+
     if (!user) {
       return res.status(400).json({
         message: "Invalid credentials",
