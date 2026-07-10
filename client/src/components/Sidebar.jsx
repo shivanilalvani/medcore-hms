@@ -7,6 +7,7 @@ import {
   FaCalendarCheck,
   FaMoneyBillWave,
   FaSignOutAlt,
+  FaBuilding,
 } from "react-icons/fa";
 
 function Sidebar() {
@@ -92,6 +93,15 @@ function Sidebar() {
             <FaMoneyBillWave />
             Billing
           </Link>
+
+          <Link
+            to="/departments"
+            className="flex items-center gap-3 hover:text-blue-400"
+          >
+            <FaBuilding />
+            Departments
+          </Link>
+
         </nav>
       </div>
 

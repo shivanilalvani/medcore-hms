@@ -12,6 +12,9 @@ import PatientDashboard from "./pages/PatientDashboard";
 import UsersPage from "./pages/UsersPage";
 import PatientsPage from "./pages/PatientsPage";
 import AddPatientPage from "./pages/AddPatientPage";
+import DepartmentsPage from "./pages/DepartmentsPage";
+import AddDepartmentPage from "./pages/AddDepartmentPage";
+import AddDoctorPage from "./pages/AddDoctorPage";
 
 function App() {
   return (
@@ -74,6 +77,21 @@ function App() {
           element={<AddPatientPage />}
         />
 
+        <Route
+          path="/departments"
+          element={<DepartmentsPage />}
+        />
+
+        <Route
+          path="/departments/add"
+          element={<AddDepartmentPage />}
+        />
+
+        <Route
+          path="/doctors/add"
+          element={<AddDoctorPage />}
+        />
+        
       </Routes>
     </BrowserRouter>
   );

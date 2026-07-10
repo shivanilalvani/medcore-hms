@@ -3,19 +3,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import DashboardLayout from "../layouts/DashboardLayout";
 
-function DoctorsPage() {
-  const [doctors, setDoctors] = useState([]);
+function DepartmentsPage() {
+  const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
-    fetchDoctors();
+    fetchDepartments();
   }, []);
 
-  const fetchDoctors = async () => {
+  const fetchDepartments = async () => {
     try {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        "http://localhost:5000/api/doctors",
+        "http://localhost:5000/api/departments",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -23,7 +23,7 @@ function DoctorsPage() {
         }
       );
 
-      setDoctors(response.data);
+      setDepartments(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -33,14 +33,14 @@ function DoctorsPage() {
     <DashboardLayout>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">
-          Doctors
+          Departments
         </h1>
 
         <Link
-          to="/doctors/add"
+          to="/departments/add"
           className="bg-blue-600 text-white px-4 py-2 rounded"
         >
-          Add Doctor
+          Add Department
         </Link>
       </div>
 
@@ -49,38 +49,32 @@ function DoctorsPage() {
           <thead>
             <tr className="bg-gray-100">
               <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Email</th>
-              <th className="p-4 text-left">Department</th>
-              <th className="p-4 text-left">Specialization</th>
-              <th className="p-4 text-left">Fee</th>
+              <th className="p-4 text-left">Description</th>
+              <th className="p-4 text-left">Location</th>
+              <th className="p-4 text-left">Status</th>
             </tr>
           </thead>
 
           <tbody>
-            {doctors.map((doctor) => (
+            {departments.map((department) => (
               <tr
-                key={doctor._id}
+                key={department._id}
                 className="border-t"
               >
                 <td className="p-4">
-                  {doctor.userId?.firstName}{" "}
-                  {doctor.userId?.lastName}
+                  {department.name}
                 </td>
 
                 <td className="p-4">
-                  {doctor.userId?.email}
+                  {department.description}
                 </td>
 
                 <td className="p-4">
-                  {doctor.departmentId?.name}
+                  {department.location}
                 </td>
 
                 <td className="p-4">
-                  {doctor.specialization}
-                </td>
-
-                <td className="p-4">
-                  ₹{doctor.consultationFee}
+                  {department.status}
                 </td>
               </tr>
             ))}
@@ -91,4 +85,4 @@ function DoctorsPage() {
   );
 }
 
-export default DoctorsPage;
+export default DepartmentsPage;
